@@ -1,4 +1,5 @@
 from enum import Enum
+import math
 
 class ChildDirection(Enum):
     LEFT = 1
@@ -95,9 +96,28 @@ class BinarySearchTree:
             min_value = current_node.value
         return min_value
 
+    def findClosestValue(self, target_value):
+        current_node = self
+        closest_value = math.inf
+        while current_node is not None:
+            new_diff = abs(target_value - current_node.value)
+            last_diff = abs(target_value - closest_value)
+            if new_diff < last_diff:
+                closest_value = current_node.value
+
+            if target_value > current_node.value:
+                current_node = current_node.right
+            elif target_value < current_node.value:
+                current_node = current_node.left
+            else:
+                break
+
+        return closest_value
+
 # Test:
-bst = BinarySearchTree(10)
-#bst.insert(1).insert(12).insert(11).insert(21).insert(13).insert(15)
-bst.remove(10)
-bst.insert(10)
-print(bst.value)
+if __name__ == "__main__":
+    bst = BinarySearchTree(10)
+    bst.insert(1).insert(12).insert(11).insert(21).insert(13).insert(15)
+    # bst.remove(10)
+    # bst.insert(10)
+    print(bst.findClosestValue(23))
